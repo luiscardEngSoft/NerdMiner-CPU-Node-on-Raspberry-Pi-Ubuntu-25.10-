@@ -1,0 +1,232 @@
+
+Instalação do sistema e dependências
+Atualizar o sistema
+sudo apt update && sudo apt upgrade -y
+
+
+Instalar dependências para compilar o cpuminer-multi
+sudo apt install -y \
+  git \
+  build-essential \
+  automake \
+  libcurl4-openssl-dev
+
+
+
+Clonando e compilando o cpuminer-multi
+O projeto usado é o famoso cpuminer-multi.
+1. Clonar o repositório
+cd ~
+git clone https://github.com/tpruvot/cpuminer-multi.git
+cd cpuminer-multi
+
+
+2. Preparar o build
+./autogen.sh
+./configure CFLAGS="-O3"
+
+
+- CFLAGS="-O3" ativa otimizações agressivas de compilação para melhor desempenho em CPU.
+3. Compilar
+make
+
+
+Após a compilação, o binário ficará em:
+/home/<SEU_USUARIO>/cpuminer-multi/cpuminer
+
+
+Exemplo com usuário luiscard:
+/home/luiscard/cpuminer-multi/cpuminer
+
+
+
+Configurando o serviço systemd do minerador
+A ideia é rodar o minerador como serviço systemd, para que:
+- Inicie automaticamente no boot
+- Reinicie sozinho se travar
+- Reinicie após queda de energia
+1. Criar o arquivo miner.service
+sudo nano /etc/systemd/system/miner.service
+
+
+Cole o conteúdo abaixo, ajustando usuário, pool e endereço de carteira:
+[Unit]
+Description=Minerador SHA256d (cpuminer-multi)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=<SEU_USUARIO>
+WorkingDirectory=/home/<SEU_USUARIO>
+
+ExecStart=/home/<SEU_USUARIO>/cpuminer-multi/cpuminer \
+  --algo sha256d \
+  --url stratum+tcp://public-pool.io:21496 \
+  --user <SEU_ENDERECO_BTC>.<NOME_WORKER> \
+  --pass x \
+  --threads 4
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+
+Campos importantes para ajustar:
+- User
+- Coloque seu usuário normal (ex.: luiscard).
+- WorkingDirectory
+- Deve apontar para o diretório home do seu usuário.
+- ExecStart → parâmetros principais:
+- --algo sha256d
+- Algoritmo de mineração (ex.: Bitcoin-like SHA256d).
+- --url stratum+tcp://public-pool.io:21496
+- URL e porta do pool (exemplo: public-pool.io).
+- --user <SEU_ENDERECO_BTC>.<NOME_WORKER>
+- Exemplo:
+bc1qexemplo1234abcd5678xyz.RPI3
+- --threads 4
+- Número de threads de CPU que o minerador irá usar (Raspberry Pi 3 tem 4 cores).
+Dica: Use nome de worker que identifique o dispositivo, ex.: RPI3, RPI3-SALA, etc.
+
+2. Recarregar o systemd
+sudo systemctl daemon-reload
+
+
+3. Habilitar e iniciar o serviço
+sudo systemctl enable miner.service
+sudo systemctl start miner.service
+
+
+
+Comandos úteis (monitorar, reiniciar, parar)
+Ver status do minerador
+systemctl status miner.service
+
+
+Você deve ver algo como:
+Loaded: loaded (/etc/systemd/system/miner.service; enabled; preset: enabled)
+Active: active (running) since ...
+Main PID: 894 (cpuminer)
+
+
+Ver logs em tempo real
+journalctl -u miner.service -f
+
+
+Você verá:
+[2026-01-03 12:08:00] Stratum difficulty set to 0.02
+[2026-01-03 12:08:00] CPU #0: 272.64 kH/s
+[2026-01-03 12:08:23] accepted: 10/11 (diff 0.002), 1064 kH/s
+[2026-01-03 12:08:23] reject reason: Difficulty too low
+
+
+Parar o minerador
+sudo systemctl stop miner.service
+
+
+Reiniciar o minerador
+sudo systemctl restart miner.service
+
+
+Desabilitar o minerador no boot (se quiser pausar o projeto)
+sudo systemctl disable miner.service
+
+
+
+Logs, desempenho e ajuste de threads
+Ajustar número de threads
+No arquivo /etc/systemd/system/miner.service, na linha ExecStart, ajuste:
+--threads 4
+
+
+Sugestões:
+- Raspberry Pi 3: --threads 3 ou --threads 4
+- Se o sistema ficar pesado:
+- Reduza para --threads 2
+Após alterar o arquivo, recarregue e reinicie:
+sudo systemctl daemon-reload
+sudo systemctl restart miner.service
+
+
+Exportar logs para arquivo (opcional)
+Se quiser um log dedicado:
+- Edite o serviço:
+sudo nano /etc/systemd/system/miner.service
+
+
+- Adicione dentro de [Service]:
+StandardOutput=append:/home/<SEU_USUARIO>/miner.log
+StandardError=append:/home/<SEU_USUARIO>/miner.log
+
+
+- Recarregue o systemd:
+sudo systemctl daemon-reload
+sudo systemctl restart miner.service
+
+
+Agora você terá também:
+tail -f /home/<SEU_USUARIO>/miner.log
+
+
+
+
+
+Exemplo de conteúdo do systemd/miner.service
+[Unit]
+Description=Minerador SHA256d (cpuminer-multi)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=<SEU_USUARIO>
+WorkingDirectory=/home/<SEU_USUARIO>
+
+ExecStart=/home/<SEU_USUARIO>/cpuminer-multi/cpuminer \
+  --algo sha256d \
+  --url stratum+tcp://public-pool.io:21496 \
+  --user <SEU_ENDERECO_BTC>.<NOME_WORKER> \
+  --pass x \
+  --threads 4
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+
+
+O usuário deve copiar esse arquivo para /etc/systemd/system/:
+sudo cp systemd/miner.service /etc/systemd/system/miner.service
+sudo systemctl daemon-reload
+sudo systemctl enable miner.service
+sudo systemctl start miner.service
+
+
+
+Riscos, limitações e observações
+- Desempenho limitado:
+Mineração em CPU é extremamente limitada e, na prática, não é lucrativa para moedas SHA256d (como Bitcoin).
+Use este projeto como laboratório de aprendizado, não como fonte de renda.
+- Consumo de energia:
+Mesmo um Raspberry Pi consome energia continuamente. Deixe claro no README que o objetivo é educacional.
+- Temperatura:
+Monitore a temperatura do Raspberry Pi, principalmente se estiver em case fechada.
+- Integridade do sistema:
+Rodar cpuminer como serviço systemd é seguro do ponto de vista de gerenciamento, mas você ainda depende da confiabilidade do software de terceiros e do pool.
+
+
+Projeto para rodar um **minerador CPU (cpuminer-multi)** em um **Raspberry Pi** com **Ubuntu 25.10 (questing)**, gerenciado por **systemd**, com reinício automático após queda de energia ou travamento.
+
+Este repositório documenta:
+
+- A configuração do ambiente no Raspberry Pi  
+- A instalação e compilação do `cpuminer-multi`  
+- A criação de um serviço `systemd` profissional (`miner.service`)  
+- Como monitorar, parar e reiniciar o minerador com segurança  
+
+> **Importante:** Este projeto está focado em **aprendizado, estudos e experimentação**. Mineração em CPU não é economicamente competitiva para a maioria das moedas. Use por curiosidade, laboratório e diversão.
+
