@@ -1,57 +1,39 @@
-# NerdMiner CPU Node on Raspberry Pi (Ubuntu 25.10)
+<p align="center">
+  <img src="docs/capa.png" width="600" alt="NerdMiner CPU Node">
+</p>
 
-Projeto para rodar um **minerador CPU (cpuminer-multi)** em um **Raspberry Pi** com **Ubuntu 25.10 (questing)**, gerenciado por **systemd**, com reinício automático após queda de energia ou travamento.
+<h1 align="center">NerdMiner CPU Node – Raspberry Pi + Ubuntu 25.10</h1>
 
-Este repositório documenta:
+<p align="center">
+  Mineração CPU automatizada com systemd • Raspberry Pi 3 • Ubuntu 25.10
+</p>
 
-- A configuração do ambiente no Raspberry Pi  
-- A instalação e compilação do `cpuminer-multi`  
-- A criação de um serviço `systemd` profissional (`miner.service`)  
-- Como monitorar, parar e reiniciar o minerador com segurança  
-
-> **Importante:** Este projeto está focado em **aprendizado, estudos e experimentação**. Mineração em CPU não é economicamente competitiva para a maioria das moedas. Use por curiosidade, laboratório e diversão.
-
----
-
-## Índice
-
-1. [Ambiente e requisitos](#ambiente-e-requisitos)  
-2. [Instalação do sistema e dependências](#instalação-do-sistema-e-dependências)  
-3. [Clonando e compilando o cpuminer-multi](#clonando-e-compilando-o-cpuminer-multi)  
-4. [Configurando o serviço systemd do minerador](#configurando-o-serviço-systemd-do-minerador)  
-5. [Comandos úteis (monitorar, reiniciar, parar)](#comandos-úteis-monitorar-reiniciar-parar)  
-6. [Logs, desempenho e ajuste de threads](#logs-desempenho-e-ajuste-de-threads)  
-7. [Estrutura do projeto para GitHub](#estrutura-do-projeto-para-github)  
-8. [Riscos, limitações e observações](#riscos-limitações-e-observações)  
-9. [Licença e créditos](#licença-e-créditos)  
+<p align="center">
+  <img src="https://img.shields.io/badge/status-active-brightgreen">
+  <img src="https://img.shields.io/badge/Ubuntu-25.10-blue">
+  <img src="https://img.shields.io/badge/Raspberry%20Pi-3B+-red">
+  <img src="https://img.shields.io/badge/mining-CPU-orange">
+  <img src="https://img.shields.io/badge/systemd-enabled-lightgrey">
+  <img src="https://img.shields.io/badge/license-MIT-yellow">
+</p>
 
 ---
 
-## Ambiente e requisitos
+# 📌 Sobre o Projeto
 
-**Hardware usado no projeto:**
+Este projeto transforma um Raspberry Pi 3 rodando Ubuntu 25.10 em um **nó de mineração CPU totalmente automatizado**, usando:
 
-- **Placa:** Raspberry Pi 3  
-- **CPU:** 4 cores ARM  
-- **Armazenamento:** MicroSD (recomendado classe 10 ou melhor)  
-- **Rede:** Conexão estável à internet  
+- `cpuminer-multi`
+- `systemd` para reinício automático
+- scripts de instalação
+- serviço dedicado `miner.service`
 
-**Sistema operacional:**
+Ideal para aprendizado, experimentação e demonstração de automação Linux.
+
+---
+
+# 🚀 Instalação Rápida
 
 ```bash
-lsb_release -a
-
-Saída esperada:
-
-Distributor ID: Ubuntu
-Description:    Ubuntu 25.10
-Release:        25.10
-Codename:       questing
-
-
-Requisitos básicos:
-• 	Usuário não-root para rodar o minerador (ex.: )
-• 	Acesso  para instalar pacotes e criar serviços
-• 	Acesso físico ou SSH ao Raspberry Pi
-
-
+chmod +x setup_nerdminer.sh
+./setup_nerdminer.sh
