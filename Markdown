@@ -40,3 +40,18 @@ Este repositório documenta:
 
 ```bash
 lsb_release -a
+
+Saída esperada:
+
+Distributor ID: Ubuntu
+Description:    Ubuntu 25.10
+Release:        25.10
+Codename:       questing
+
+
+Requisitos básicos:
+• 	Usuário não-root para rodar o minerador (ex.: )
+• 	Acesso  para instalar pacotes e criar serviços
+• 	Acesso físico ou SSH ao Raspberry Pi
+
+
