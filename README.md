@@ -1,2 +1,15 @@
-# NerdMiner-CPU-Node-on-Raspberry-Pi-Ubuntu-25.10-
-Projeto para rodar um minerador CPU (cpuminer-multi) em um Raspberry Pi com Ubuntu 25.10 (questing), gerenciado por systemd, com reinício automático após queda de energia ou travamento.
+NerdMiner CPU Node on Raspberry Pi (Ubuntu 25.10)
+# NerdMiner CPU Node on Raspberry Pi (Ubuntu 25.10)
+Projeto para rodar um minerador CPU (cpuminer-multi) em um Raspberry Pi com Ubuntu 25.10
+(questing), gerenciado por systemd, com reinício automático após queda de energia ou travamento.
+## Índice
+1. Ambiente e requisitos
+2. Instalação do sistema e dependências
+3. Clonando e compilando o cpuminer-multi
+4. Configurando o serviço systemd do minerador
+5. Comandos úteis (monitorar, reiniciar, parar)
+6. Logs, desempenho e ajuste de threads
+7. Estrutura do projeto para GitHub
+8. Riscos, limitações e observações
+9. Licença e créditos
+(Conteúdo completo conforme fornecido anteriormente.)
