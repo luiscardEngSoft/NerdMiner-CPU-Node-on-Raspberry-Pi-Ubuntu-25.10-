@@ -1,0 +1,42 @@
+# NerdMiner CPU Node on Raspberry Pi (Ubuntu 25.10)
+
+Projeto para rodar um **minerador CPU (cpuminer-multi)** em um **Raspberry Pi** com **Ubuntu 25.10 (questing)**, gerenciado por **systemd**, com reinício automático após queda de energia ou travamento.
+
+Este repositório documenta:
+
+- A configuração do ambiente no Raspberry Pi  
+- A instalação e compilação do `cpuminer-multi`  
+- A criação de um serviço `systemd` profissional (`miner.service`)  
+- Como monitorar, parar e reiniciar o minerador com segurança  
+
+> **Importante:** Este projeto está focado em **aprendizado, estudos e experimentação**. Mineração em CPU não é economicamente competitiva para a maioria das moedas. Use por curiosidade, laboratório e diversão.
+
+---
+
+## Índice
+
+1. [Ambiente e requisitos](#ambiente-e-requisitos)  
+2. [Instalação do sistema e dependências](#instalação-do-sistema-e-dependências)  
+3. [Clonando e compilando o cpuminer-multi](#clonando-e-compilando-o-cpuminer-multi)  
+4. [Configurando o serviço systemd do minerador](#configurando-o-serviço-systemd-do-minerador)  
+5. [Comandos úteis (monitorar, reiniciar, parar)](#comandos-úteis-monitorar-reiniciar-parar)  
+6. [Logs, desempenho e ajuste de threads](#logs-desempenho-e-ajuste-de-threads)  
+7. [Estrutura do projeto para GitHub](#estrutura-do-projeto-para-github)  
+8. [Riscos, limitações e observações](#riscos-limitações-e-observações)  
+9. [Licença e créditos](#licença-e-créditos)  
+
+---
+
+## Ambiente e requisitos
+
+**Hardware usado no projeto:**
+
+- **Placa:** Raspberry Pi 3  
+- **CPU:** 4 cores ARM  
+- **Armazenamento:** MicroSD (recomendado classe 10 ou melhor)  
+- **Rede:** Conexão estável à internet  
+
+**Sistema operacional:**
+
+```bash
+lsb_release -a
