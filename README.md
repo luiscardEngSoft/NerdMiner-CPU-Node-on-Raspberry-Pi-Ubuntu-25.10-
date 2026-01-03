@@ -1,4 +1,12 @@
+<p align="center">
+  <img src="docs/capa.png" width="600" alt="NerdMiner CPU Node">
+</p>
 
+<h1 align="center">NerdMiner CPU Node – Raspberry Pi + Ubuntu 25.10</h1>
+
+<p align="center">
+  Mineração CPU automatizada com systemd • Raspberry Pi 3 • Ubuntu 25.10
+</p>
 ![Status](https://img.shields.io/badge/status-active-brightgreen)
 ![Ubuntu](https://img.shields.io/badge/Ubuntu-25.10-blue)
 ![RaspberryPi](https://img.shields.io/badge/Raspberry%20Pi-3B+-red)
