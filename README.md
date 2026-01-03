@@ -29,3 +29,25 @@ Projeto para rodar um minerador CPU (cpuminer-multi) em um Raspberry Pi com Ubun
 8. Riscos, limitações e observações
 9. Licença e créditos
 (Conteúdo completo conforme fornecido anteriormente.)
+
+
+# 📌 Sobre o Projeto
+
+Este projeto transforma um Raspberry Pi 3 rodando Ubuntu 25.10 em um **nó de mineração CPU totalmente automatizado**, usando:
+
+- `cpuminer-multi`
+- `systemd` para reinício automático
+- scripts de instalação
+- serviço dedicado `miner.service`
+
+Ideal para aprendizado, experimentação e demonstração de automação Linux.
+
+---
+
+# 🚀 Instalação Rápida
+
+```bash
+chmod +x setup_nerdminer.sh
+./setup_nerdminer.sh
+
+
